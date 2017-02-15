@@ -17,7 +17,7 @@ use Admin\Common\Constants\MessageConstants;
 use Admin\Common\Constants\NumberConstants;
 
 
-class AuthController extends BaseController {
+class AuthController extends Controller {
 	
 	public  $Auth_D;
 	
