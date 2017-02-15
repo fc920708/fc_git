@@ -43,7 +43,7 @@ class BaseController extends EmptyController{
 
 		if( $this->checkLogin() === false){
 
-			redirect('/Admin/Index/index');
+// 			redirect('/Admin/Index/index');
 		}
 
 
