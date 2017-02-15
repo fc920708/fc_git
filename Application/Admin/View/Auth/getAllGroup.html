@@ -1,0 +1,164 @@
+<!-- 表格样式 -->	
+	<link rel="stylesheet" href="__PUBLIC__/Admin/Cube/css/libs/footable.core.css" type="text/css" />
+<!-- 提醒框样式 -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-default.css"/>	
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-bar.css"/>	
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-theme.css"/>
+	
+	
+<div class="row">
+								<div class="col-lg-12">
+									<div class="main-box clearfix">
+										<header class="main-box-header clearfix">
+											<h2 class="pull-left"></h2>																
+											
+											<div class="filter-block pull-right">
+												<div class="form-group pull-left">
+													<input type="text" placeholder="Search..." class="form-control" id="filter">
+													<i class="fa fa-search search-icon"></i>
+												</div>
+												
+												<a class="btn btn-primary pull-right" href="__CONTROLLER__/addGroup">
+													<i class="fa fa-plus-circle fa-lg"></i> 添加用户组
+												</a>
+											</div>
+										</header>
+										
+										<div class="main-box-body clearfix table-responsive">
+											
+												<table class="table footable user-list table-hover " data-filter-text-only="true" data-filter="#filter" data-page-size="6">
+													<thead>
+														<tr>
+															<th>用户组Id</th>															
+															<th >用户组名称</th>
+															<th class="text-center">状态</th>															
+														</tr>
+													</thead>
+													<tbody>
+													<volist name="getAllGroup" id="data">
+														<tr class="group_val_{$data.id}">
+															<td>
+																{$data.id}
+															</td>
+																														
+															<td>
+																{$data.title}
+															</td>
+	
+															<td class="text-center">
+																
+																<if condition="$data.status eq 1 ">
+																	<span class="label  label-success">正常</span>
+																<else /> 
+																	<span class="label label-danger">废止</span>
+																</if>
+																
+															</td>
+															
+															<td style="width: 15%;">
+															
+																<a class="table-link" href="__CONTROLLER__/getGroupRules?id={$data.id}">
+																	<span class="fa-stack example" data-toggle="popover" data-content="查看该组权限" data-placement="top">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+																	</span>
+																</a>
+																
+																
+																<a class="table-link danger"  style="cursor: pointer;" onclick="delgroup({$data.id})">
+																	<span class="fa-stack example" data-toggle="popover" data-content="删除用户组" data-placement="top">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+																</a>
+															</td>
+														</tr>
+													</volist>		
+													</tbody>
+												</table>
+											
+										
+											<ul class="pagination pull-right">
+												
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+	
+	<!-- 表格js -->
+	
+	<script src="__PUBLIC__/Admin/Cube/js/footable.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.sort.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.paginate.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.filter.js"></script>
+	
+	<!-- 提醒框js -->
+	<script src="__PUBLIC__/Admin/Cube/js/modernizr.custom.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/classie.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/notificationFx.js"></script>
+
+	<!-- 表格内部js -->
+	<script type="text/javascript">
+	$(document).ready(function() {
+		//popover按钮提醒效果开始
+		$(".example").mouseover(function(){
+			$(this).popover('show');
+		});
+		$(".example").mouseout(function(){
+			$(this).popover('hide');
+		});
+		//popover按钮提醒效果结束
+		$('.footable').footable();
+	});
+	</script>
+	
+	
+
+	<script type="text/javascript">
+		//顶部提醒框
+		function tipmsg(status,content,url){
+			// create the notification
+			var notification = new NotificationFx({
+				message : '<span class="icon fa fa-bullhorn fa-2x"></span><p>'+content+'</p>',
+				layout : 'bar',
+				effect : 'slidetop',
+				type : 'error', // notice, warning or error
+				ttl:2000,
+				onClose : function() {
+					//bttnSlideOnTop.disabled = false;
+					if(status==1){
+						window.location.href=url;
+					}
+				}
+			});
+	
+			// show the notification
+			notification.show();
+			
+			// disable the button (for demo purposes only)
+			this.disabled = true;
+		}
+		
+		
+		//ajax删除用户组
+		function delgroup(gid){
+			if(window.confirm('该操作会同时删除该组下的用户信息,确定要删除这项用户组吗？')){
+				$.ajax({
+				   type: "POST",
+				   url: "__CONTROLLER__/delGroup",
+				   data: "gid="+gid,
+				   dataType:"json",
+				   success: function(data){
+					 //alert(status.content);
+				     tipmsg(data.status,data.content,data.url);
+				     if(data.status == 1){
+				    	 $(".group_val_"+gid).addClass('hidden');
+				     }
+				   }
+				});
+			}
+		}
+
+	</script>
+	

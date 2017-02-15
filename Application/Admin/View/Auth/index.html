@@ -1,0 +1,168 @@
+<!-- 表格样式 -->
+	<link rel="stylesheet" href="__PUBLIC__/Admin/Cube/css/libs/footable.core.css" type="text/css" />
+
+<!-- 提醒框样式 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-default.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-bar.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-theme.css"/>
+
+
+<div class="row">
+								<div class="col-lg-12">
+									<div class="main-box clearfix">
+										<header class="main-box-header clearfix">
+											<h2 class="pull-left"></h2>
+											
+											<div class="filter-block pull-right">
+												<div class="form-group pull-left">
+													<input type="text" placeholder="Search..." class="form-control" id="filter">
+													<i class="fa fa-search search-icon"></i>
+												</div>
+												
+												<a class="btn btn-primary pull-right" href="__MODULE__/User/createPage">
+													<i class="fa fa-plus-circle fa-lg"></i> 添加用户
+												</a>
+											</div>
+										</header>
+										
+										<div class="main-box-body clearfix table-responsive">
+											
+												<table class="table footable user-list table-hover " data-filter-text-only="true" data-filter="#filter" data-page-size="6">
+													<thead>
+														<tr>
+															<th>用户Id</th>															
+															<th >用户身份</th>
+															<th class="text-center">状态</th>
+															<th class="text-center">添加时间</th>
+															
+														</tr>
+													</thead>
+													<tbody>
+													<volist name="list" id="data">
+														<tr>
+															<td>
+																{$data.uid}
+															</td>
+															
+															<td>
+																<img src="{$data.avatar|default='__PUBLIC__/Admin/Cube/img/samples/robert-300.jpg'}" alt="" style=" max-width: 60px;" />
+																<a  class="user-link" style="font-size: 1.65em;text-decoration:none;">{$data.username}</a>
+																<span class="user-subhead" style=" font-size: 1.15em;" >{$data.title}</span>
+															</td>		
+															<td class="text-center">
+																
+																<if condition="$data.status eq 1 ">
+																	<span class="label  label-success">正常</span>
+																<else /> 
+																	<span class="label label-danger">废止</span>
+																</if>
+																
+															</td>
+															<td class="text-center">
+																{$data.addtime|date="Y-m-d H:i",###}
+															</td>
+															<td style="width: 15%;">
+																
+																<a class="table-link" href="__MODULE__/User/editPage/uid/{$data.uid}">
+																	<span class="fa-stack example" data-toggle="popover" data-content="修改用户" data-placement="top">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+																</a>
+																<a class="table-link danger user_del" href="#" data-uid="{$data.uid}">
+																	<span class="fa-stack example" data-toggle="popover" data-content="删除用户" data-placement="top">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+																</a>
+															</td>
+														</tr>
+													</volist>		
+													</tbody>
+												</table>
+											
+										
+											<ul class="pagination pull-right">
+												
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+	
+	<!-- 表格js -->
+	
+	<script src="__PUBLIC__/Admin/Cube/js/footable.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.sort.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.paginate.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/footable.filter.js"></script>
+
+
+	<!-- 提醒框js -->
+	<script src="__PUBLIC__/Admin/Cube/js/modernizr.custom.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/classie.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/notificationFx.js"></script>
+
+
+	<!-- 表格内部js -->
+	<script type="text/javascript">
+	$(document).ready(function() {
+		//popover按钮提醒效果开始
+		$(".example").mouseover(function(){
+			$(this).popover('show');
+		});
+		$(".example").mouseout(function(){
+			$(this).popover('hide');
+		});
+		//popover按钮提醒效果结束
+		$('.footable').footable();
+	});
+	</script>
+
+	<!-- 提醒框 -->
+	<script>
+
+		function tipmsg(status,content,url){
+
+			// create the notification
+			var notification = new NotificationFx({
+				message : '<span class="icon fa fa-bullhorn fa-2x"></span><p>'+content+'</p>',
+				layout : 'bar',
+				effect : 'slidetop',
+				type : 'error', // notice, warning or error
+				ttl:2000,
+				onClose : function() {
+					//bttnSlideOnTop.disabled = false;
+					if(status==1){
+						window.location.href=url;
+					}
+				}
+			});
+
+			// show the notification
+			notification.show();
+
+			// disable the button (for demo purposes only)
+			this.disabled = true;
+		}
+
+		//删除插件操作绑定
+		$(function () {
+			$('.user_del').click(function(){
+
+				if( !confirm('你确定删除这个用户?')){
+					return false;
+				}
+
+
+				var uid = $(this).data('uid');
+
+
+				$.post('__MODULE__/User/delPost',{uid:uid},function(result){
+					tipmsg(result.status,result.content,result.url);
+				}, 'json');
+			});
+		});
+
+	</script>
+	

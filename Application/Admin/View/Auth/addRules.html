@@ -1,0 +1,160 @@
+<!-- 表单验证样式文件 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/bootstrapValidator.min.css">
+
+<!-- 提醒框样式 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-default.css"/>	
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-bar.css"/>	
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-theme.css"/>
+
+
+
+
+								<div class="col-lg-12">
+									<div class="main-box">
+										<header class="main-box-header clearfix">
+											<h2></h2>
+										</header>
+										
+										<div class="main-box-body clearfix">
+											<form class="form-horizontal" role="form" action="__ACTION__" method="post">
+												
+												
+												<div class="form-group form-inline">
+															<label for="name">权限地址：</label>
+															<input type="text" placeholder="请输入权限地址,例如:/Admin/Auth" name="name" id="name" class="form-control" style="width:25%;">
+															<span style="color:red;">*</span>
+												</div>
+												
+												
+												<div class="form-group form-inline">
+															<label for="title">权限名称：</label>
+															<input type="text" placeholder="请输入权限名称" name="title" id="title" class="form-control" style="width:25%;">
+															<span style="color:red;">*</span>
+												</div>
+												
+				
+												<div class="form-group form-inline">
+													<label>上级栏目：</label>
+													<select  name="pid"  class="form-control">
+														<option value="0"> 根目录</option>
+														
+														<volist name="get_all_rule" id="vo">	
+															<option value="{$vo.id}">{$vo.title}</option>
+
+														</volist>
+														
+													</select>
+												</div>
+												
+												<div class="form-group form-inline">
+													<label>是否是栏目：</label>
+													<select  name="is_cate"  class="form-control">
+														<option value="1">是</option>
+														<option value="0">不是</option>
+													
+													</select>
+												</div>
+												
+												<div class="form-group form-inline">
+															<label for="title">图标样式：</label>
+															<input type="text" placeholder="请输入图标样式" name="icons_style" id="icons_style"  value="fa-th-large" class="form-control" style="width:25%;">															
+												</div>
+												
+												<div align="center" id="nestable-menu">
+													<button type="submit" class="btn btn-success" data-action="expand-all">保存</button>
+													<a href="__CONTROLLER__/getRules" class="btn btn-danger" data-action="collapse-all">取消</a>
+										 		</div>
+											</form>
+													  			
+										</div>
+									</div>
+								</div>
+<!-- 表单验证文件 -->
+<script src="__PUBLIC__/Admin/Cube/js/bootstrapValidator.min.js"></script>
+
+<!-- 提醒框js -->
+<script src="__PUBLIC__/Admin/Cube/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/Admin/Cube/js/classie.js"></script>
+<script src="__PUBLIC__/Admin/Cube/js/notificationFx.js"></script>
+
+<!-- 表单合法性验证，ajax提交 -->
+<script>
+	$(function() {
+		$('.form-horizontal')
+		.bootstrapValidator({
+            message: '输入不合法',
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                // invalid: 'glyphicon glyphicon-remove',
+                //validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+            	name: {         
+                    validators: {
+                        notEmpty: {
+                            message: '权限地址不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 100,
+                            message: '权限地址必须是2-100位'
+                        }
+                    }
+                },
+                title: {
+                    validators: {
+                        notEmpty: {
+                            message: '权限名称不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 30,
+                            message: '权限名称必须是2-30位'
+                        }
+                    }
+                },
+            }
+           
+		})
+		.on('success.form.bv', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+            	 tipmsg(result.status,result.content,result.url);
+            }, 'json');
+        });
+		
+		
+	});
+	</script>
+	
+	<!-- 提醒框 -->
+	<script>					
+			function tipmsg(status,content,url){
+				// create the notification
+				var notification = new NotificationFx({
+					message : '<span class="icon fa fa-bullhorn fa-2x"></span><p>'+content+'</p>',
+					layout : 'bar',
+					effect : 'slidetop',
+					type : 'error', // notice, warning or error
+					ttl:2000,
+					onClose : function() {
+						//bttnSlideOnTop.disabled = false;
+						if(status==1){
+							window.location.href=url;
+						}
+					}
+				});
+
+				// show the notification
+				notification.show();
+				
+				// disable the button (for demo purposes only)
+				this.disabled = true;
+			}
+	</script>

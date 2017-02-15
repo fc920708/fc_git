@@ -1,0 +1,177 @@
+<!-- 提醒框样式 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-default.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-bar.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-theme.css"/>
+
+
+<div class="row">
+								<div class="col-lg-12">
+
+										<div class="main-box clearfix">
+										<header class="main-box-header clearfix">
+											<h2><button class="btn btn-success">{$getGroupRules['group_info'].name}</button></h2>
+										</header>
+										<div class="main-box-body clearfix">
+									<form id="auth_group_form" action="__ACTION__" method="post">
+										<input type="hidden" name="gid" value="{$getGroupRules.gid}" />
+										<volist name="getGroupRules['all_rule']" id="vo">
+											<div class="col-md-2 col-sm-4 col-xs-12 pricing-package simple">
+												<div class="pricing-package-inner">
+													<div class="package-header" >
+														<span class="example" data-toggle="popover" data-content="点击修改权限状态" data-placement="top">
+														<in name="vo.id" value="$getGroupRules['group_info']['rules']">
+															<h3 class="parent_lan" data-id="{$vo.id}" data-toggle="collapse" style="cursor: pointer;text-decoration:none;">{$vo.title}</h3>
+
+															<input type="hidden" name="real_rules[]" value="{$vo.id}" id="real_rules_{$vo.id}" />
+
+														<else />
+															<h3 class="parent_lan" data-id="{$vo.id}" data-toggle="collapse" style="cursor: pointer;text-decoration:line-through;background:red;">{$vo.title}</h3>
+
+															<input type="hidden" name="real_rules[]" value='0' id="real_rules_{$vo.id}" />
+
+														</in>
+														</span>
+													</div>
+													<div class="package-content">
+														<if condition="$vo.son neq '' ">
+														<ul class="package-top-features package-features">
+															<volist name="vo.son" id="vo2">	
+															<span class="example" data-toggle="popover" data-content="点击修改权限状态" data-placement="top">									
+															<li   id="click_li_{$vo2.id}" onclick="switch_status('{$vo2.id}')"   <in name="vo2.id" value="$getGroupRules['group_info']['rules']"> class="has-feature click_li_{$vo.id}" <else /> class="has-nofeature"  </in>
+															 style="cursor: pointer;" >
+																{$vo2.title}
+																<input type="hidden"  id="rules{$vo2.id}" class="rules" name="rules[]" <in name="vo2.id" value="$getGroupRules['group_info']['rules']"> value="1" <else /> value="0"  </in> >
+																<input type="hidden" name="real_rules[]" value='<in name="vo2.id" value="$getGroupRules['group_info']['rules']">{$vo2.id}<else />0</in>' id="real_rules_{$vo2.id}"/>
+																</li>
+															</span>
+															</volist>
+														</ul>
+														</if>
+													</div>
+												</div>
+												
+											</div>
+										</volist>
+		
+										</div>
+										
+										<div align="center" id="nestable-menu">
+													<button data-action="expand-all" class="btn btn-success" type="submit">保存</button>
+													<a data-action="collapse-all" class="btn btn-danger" href="__CONTROLLER__/getAllGroup">取消</a>
+										</div>
+
+									</div>
+									</form>
+								</div>
+								</div>
+							</div>
+
+	<!-- 提醒框js -->
+	<script src="__PUBLIC__/Admin/Cube/js/modernizr.custom.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/classie.js"></script>
+	<script src="__PUBLIC__/Admin/Cube/js/notificationFx.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//popover按钮提醒效果开始
+			$(".example").mouseover(function(){
+				$(this).popover('show');
+			});
+			$(".example").mouseout(function(){
+				$(this).popover('hide');
+			});
+			//popover按钮提醒效果结束
+		});
+
+
+		<!-- 提醒框 -->
+		function tipmsg(status,content,url) {
+
+			// create the notification
+			var notification = new NotificationFx({
+				message: '<span class="icon fa fa-bullhorn fa-2x"></span><p>' + content + '</p>',
+				layout: 'bar',
+				effect: 'slidetop',
+				type: 'error', // notice, warning or error
+				ttl: 2000,
+				onClose: function () {
+					//bttnSlideOnTop.disabled = false;
+					if (status == 1) {
+						window.location.href = url;
+					}
+				}
+			});
+
+			// show the notification
+			notification.show();
+
+			// disable the button (for demo purposes only)
+			this.disabled = true;
+		}
+
+		//权限功能开关切换
+		function switch_status(id){
+			var val = $("#rules"+id).val();
+
+			//alert($('#real_rules_'+id).val());
+			if(val == 1){
+				$("#rules"+id).val(0);
+				$("#click_li_"+id).removeClass("has-feature");
+				$("#click_li_"+id).addClass("has-nofeature");
+
+				$('#real_rules_'+id).val(0);
+
+			}else{
+				$("#rules"+id).val(1);
+				$("#click_li_"+id).removeClass("has-nofeature");
+				$("#click_li_"+id).addClass("has-feature");
+
+				$('#real_rules_'+id).val(id);
+			}
+
+		}
+
+
+		$(function(){
+
+			//分组权限一级目录点击功能
+			$('.parent_lan').click(function() {
+				var theId = $(this).data('id');
+
+				if ($(this).css('text-decoration') == 'none') {
+
+					$(this).css('text-decoration', 'line-through')
+					//$(this).css('color', '#7D7D7D')
+					$(this).css('background','red');
+					//删除的权限 值设为0
+					$('#real_rules_'+theId).val(0);
+
+					//二级栏目
+					//$('.click_li_'+theId).click();
+					//$('.click_li_'+theId).focusout(); //未完成
+
+				}else{
+
+					$(this).css('text-decoration', 'none')
+					//$(this).css('color', '#fff')
+					$(this).css('background','#03A9F4');
+					//二级栏目
+					//$('.click_li_'+theId).click();
+					//$('.click_li_'+theId).focusout(); //未完成
+
+					$('#real_rules_'+theId).val(theId);
+				}
+
+			})
+
+			//保存按钮
+			$('#auth_group_form').on('submit',function(e){
+				e.preventDefault();
+				var $form = $(e.target);
+				$.post($form.attr('action'),$form.serialize(), function(result){
+					tipmsg(result.status,result.content,result.url);
+				}, 'json');
+			})
+		});
+
+	</script>

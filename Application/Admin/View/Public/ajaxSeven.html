@@ -1,0 +1,27 @@
+<volist name="list" id="vo" key="k">
+	<div class="form-group form-inline">
+		<switch name="vo.type">
+			<case value="login">
+				<p>任务{$k}：使用APP注册帐号；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="check">
+				<p>任务{$k}：完成实名认证；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="recharge">
+				<p>任务{$k}：充值任意金额；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="touzi">
+				<p>任务{$k}：选择任意项目投资成功；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="addbank">
+				<p>任务{$k}：绑定一张银行卡；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="cash">
+				<p>任务{$k}：提现成功；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+			<case value="tuijian">
+				<p>任务{$k}：邀请1名好友投资；完成时间：{$vo.addtime|date="Y-m-d H:i:s",###}</p>
+			</case>
+		</switch>
+	</div>
+</volist>

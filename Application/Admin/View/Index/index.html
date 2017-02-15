@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Login</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="__CUBE__/css/bootstrap/bootstrap.min.css" />
+
+    <!-- libraries -->
+    <link rel="stylesheet" type="text/css" href="__CUBE__/css/libs/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="__CUBE__/css/libs/nanoscroller.css" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="__CUBE__/css/compiled/theme_styles.css" />
+
+    <!-- this page specific styles -->
+
+    <!-- Favicon -->
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon"/>
+
+
+</head>
+<body id="login-page-full">
+<div id="login-full-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="login-box">
+                    <div id="login-box-holder">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <header id="login-header">
+                                    <div id="login-logo">
+                                        <img src="__CUBE__/img/logo.png" alt=""/>
+                                    </div>
+                                </header>
+                                <div id="login-box-inner">
+                                    <form role="form" id="login_form" action="__ACTION__" method="post">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <input class="form-control keydown" type="text" placeholder="用户名" name="username"/>
+
+
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                            <input type="password" class="form-control keydown" placeholder="密码" name="password"/>
+
+
+                                        </div>
+                                        <div class="alert alert-danger" style="display: none" id="error_show_div">
+                                            <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                            <strong id="error_show"></strong>
+                                        </div>
+
+                                    </form>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <button id="login_submit" class="btn btn-success col-xs-12">登录</button>
+                                            </div>
+                                        </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__CUBE__/js/jquery.js"></script>
+<script>
+	//回车事件
+	$(".keydown").keydown(function(e){
+		var curKey = e.which;
+		if(curKey == 13){
+			$("#login_submit").click();
+		}
+	});
+</script>
+<script>
+    $(function(){
+        function show_error(msg){
+            $('#error_show_div').show();
+            $('#error_show').html(msg)
+        }
+
+
+        $('#login_submit').click(function(){
+            var u = $('input[name=username]').val();
+            var p = $('input[name=password]').val();
+            if(u == ''){
+                show_error('用户名不能为空')
+                return
+            }
+            if(p == ''){
+                show_error('密码不能为空')
+                return
+            }
+
+            $.post('/Admin/Index/index',{username: u,password:p},function(data){
+
+                if(data.status != '1'){
+                    show_error(data.content);
+                }else{
+                    window.location.href = data.url;
+                }
+
+            },'json')
+        })
+    })
+</script>
+
+
+</body>
+</html>

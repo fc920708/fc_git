@@ -1,0 +1,82 @@
+
+
+<div id="page-wrapper" class="container">
+	<div class="row">
+		<div id="nav-col">
+			<section id="col-left" class="col-left-nano">
+				<div id="col-left-inner" class="col-left-nano-content">
+					<div id="user-left-box" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown">
+						<img alt="" src="__PUBLIC__/Admin/Cube/img/samples/scarlet-159.png" />
+						<div class="user-box">
+							<span class="name">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Scarlett J.
+									<i class="fa fa-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="user-profile.html"><i class="fa fa-user"></i>Profile</a></li>
+									<li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
+									<li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
+									<li><a href="/Admin/Index/logout"><i class="fa fa-power-off"></i>Logout</a></li>
+								</ul>
+							</span>
+							<span class="status">
+								<i class="fa fa-circle"></i> Online
+							</span>
+						</div>
+					</div>
+							
+							
+							<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">	
+								<ul class="nav nav-pills nav-stacked">
+									<li class="nav-header nav-header-first hidden-sm hidden-xs">
+										<!--Navigation  -->
+									</li>
+									
+									<volist name="cate_list" id="vo">
+																								
+									<li <?php if(false!==strpos($vo['name'],$current_controller)){echo 'class="active"'; } ;?> >
+										<a href="{$vo.name}" <if condition="$vo.son neq '' "> class="dropdown-toggle"  </if> >
+											<i class="fa {$vo.icons_style}"></i>
+											<span>{$vo.title}</span>
+											
+											<if condition="$vo.son eq '' ">
+												<span class="label label-primary pull-right"></span>
+											 <else />
+											 	<i class="fa fa-angle-right drop-icon"></i>
+											</if>
+										</a>
+										
+										<volist name="vo.son" id="vo2">
+										<ul class="submenu">
+											<li>
+												<a href="{$vo2.name}"  <if condition="$vo2.name eq $current_action ">class="active" </if>    >
+													{$vo2.title}
+												</a>
+											</li>
+											
+										</ul>
+										</volist>
+									</li>
+									</volist>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<div id="nav-col-submenu"></div>
+				</div>
+				<div id="content-wrapper">
+					<div class="row">
+						<div class="col-lg-12">
+
+							<div class="row">
+								<div class="col-lg-12">
+									<ol class="breadcrumb" style="margin-bottom:20px;">
+										<li><a href="#">{$current_controller_title}</a></li>
+										<li class="active"><span>{$current_action_title}</span></li>
+									</ol>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- content -->

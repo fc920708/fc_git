@@ -1,0 +1,146 @@
+<!-- 表单验证样式文件 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/bootstrapValidator.min.css">
+
+<!-- 提醒框样式 -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-default.css"/>	
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-bar.css"/>	
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/Cube/css/libs/ns-style-theme.css"/>
+
+
+
+
+								<div class="col-lg-12">
+									<div class="main-box">
+										<header class="main-box-header clearfix">
+											<h2></h2>
+										</header>
+										
+										<div class="main-box-body clearfix">
+											<form class="form-horizontal" role="form" action="" method="post">
+												
+												
+												<div class="form-group form-inline">
+															<label for="name">用户名：</label>
+															<input type="text" placeholder="请输入用户名" name="username" id="username" class="form-control" style="width:25%;" value="{$list['username']}">
+															<span style="color:red;">*</span>
+												</div>
+												
+												
+												<div class="form-group form-inline">
+															<label for="title">登录密码：</label>
+															<input type="password" placeholder="请输入登录密码" name="password" id="password" class="form-control" style="width:25%;" value="{$list['password']}">
+															<span style="color:red;">*</span>
+												</div>
+												<div class="form-group form-inline">
+													<label>权限组：</label>
+													<select  name="group_id" id="group_id"  class="form-control">
+														<option value="">请选择权限组</option>
+														<volist name="rule" id="rule">
+															<option value="{$rule.id}" <if condition="$rule['id'] eq $list['group_id']">selected</if>>{$rule.title}</option>
+														</volist>
+													</select>
+												</div>
+												<div class="form-group form-inline">
+													<label>是否启用：</label>
+													<select  name="status"  class="form-control">
+														<option value="1" <if condition="$list['status'] eq 1">selected</if>>是</option>
+														<option value="0" <if condition="$list['status'] neq 1">selected</if>>不是</option>
+													
+													</select>
+												</div>
+												
+												<div align="center" id="nestable-menu">
+													<button type="submit" class="btn btn-success" data-action="expand-all">保存</button>
+													<a href="__CONTROLLER__/User" class="btn btn-danger" data-action="collapse-all">取消</a>
+										 		</div>
+											</form>
+													  			
+										</div>
+									</div>
+								</div>
+<!-- 表单验证文件 -->
+<script src="__PUBLIC__/Admin/Cube/js/bootstrapValidator.min.js"></script>
+
+<!-- 提醒框js -->
+<script src="__PUBLIC__/Admin/Cube/js/modernizr.custom.js"></script>
+<script src="__PUBLIC__/Admin/Cube/js/classie.js"></script>
+<script src="__PUBLIC__/Admin/Cube/js/notificationFx.js"></script>
+
+<!-- 表单合法性验证，ajax提交 -->
+<script>
+	$(function() {
+		$('.form-horizontal')
+		.bootstrapValidator({
+            message: '输入不合法',
+            feedbackIcons: {
+                //valid: 'glyphicon glyphicon-ok',
+                // invalid: 'glyphicon glyphicon-remove',
+                //validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+            	username: {         
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '登录密码不能为空'
+                        }
+                    }
+                },
+                group_id: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择权限组'
+                        }
+                    }
+                },
+            }
+           
+		})
+		.on('success.form.bv', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+            	 tipmsg(result.status,result.content,result.url);
+            }, 'json');
+        });
+		
+		
+	});
+	</script>
+	
+	<!-- 提醒框 -->
+	<script>					
+			function tipmsg(status,content,url){
+				// create the notification
+				var notification = new NotificationFx({
+					message : '<span class="icon fa fa-bullhorn fa-2x"></span><p>'+content+'</p>',
+					layout : 'bar',
+					effect : 'slidetop',
+					type : 'error', // notice, warning or error
+					ttl:2000,
+					onClose : function() {
+						//bttnSlideOnTop.disabled = false;
+						if(status==1){
+							window.location.href=url;
+						}
+					}
+				});
+
+				// show the notification
+				notification.show();
+				
+				// disable the button (for demo purposes only)
+				this.disabled = true;
+			}
+	</script>
