@@ -172,9 +172,9 @@ class UserModel extends CommonModel
     public function getUserinfoByUid($uid)
     {
 
-        $result = $this->field('jt_admin_user.uid,jt_admin_user.username,jt_admin_user.avatar,jt_admin_user.status,jt_auth_group_access.group_id')
-            ->join('jt_auth_group_access ON jt_admin_user.uid = jt_auth_group_access.uid')
-            ->where(array('jt_admin_user.uid'=>$uid))
+        $result = $this->field('fc_admin_user.uid,fc_admin_user.username,fc_admin_user.avatar,fc_admin_user.status,fc_auth_group_access.group_id')
+            ->join('fc_auth_group_access ON fc_admin_user.uid = fc_auth_group_access.uid')
+            ->where(array('fc_admin_user.uid'=>$uid))
             ->find();
 
         return $result;

@@ -35,9 +35,9 @@ class AuthModel extends Model {
 	
 	public function  getAllUserInfo(){
 		
-		$list = $this->field("jt_admin_user.uid,jt_admin_user.username,jt_admin_user.status,jt_admin_user.addtime,jt_auth_group.title,jt_admin_user.avatar")
-		->join('jt_admin_user ON jt_admin_user.uid = jt_auth_group_access.uid')
-		->join('jt_auth_group ON jt_auth_group.id = jt_auth_group_access.group_id')
+		$list = $this->field("fc_admin_user.uid,fc_admin_user.username,fc_admin_user.status,fc_admin_user.addtime,fc_auth_group.title,fc_admin_user.avatar")
+		->join('fc_admin_user ON fc_admin_user.uid = fc_auth_group_access.uid')
+		->join('fc_auth_group ON fc_auth_group.id = fc_auth_group_access.group_id')
 		->order("addtime asc")
 		->select();
 		
@@ -54,7 +54,7 @@ class AuthModel extends Model {
 	 * @version v1.0.0
 	 */
 	public function getAllGroup(){
-		return $this->table("jt_auth_group")->field("id,title,status")->select();
+		return $this->table("fc_auth_group")->field("id,title,status")->select();
 	
 	}
 	
@@ -70,7 +70,7 @@ class AuthModel extends Model {
 	public  function  addUserGroup($title){
 		$data['title'] = $title;
 		$data['status'] = 1;
-		$this->table("jt_auth_group");
+		$this->table("fc_auth_group");
 		if($this->create($data)){
 			return  $uid = $this->add();
 						
@@ -96,7 +96,7 @@ class AuthModel extends Model {
 		
 		if(trim($data['type'])=="set"){//设置用户组权限信息
 			$where = array("id"=>$data['id']);
-			$this->table("jt_auth_group");
+			$this->table("fc_auth_group");
 			//处理规则
 			$rules = explode(',',$data['rules']);
 			sort($rules);
@@ -110,13 +110,13 @@ class AuthModel extends Model {
 		}else{//获取用户组权限与所有权限信息
 			
 			$where_group = array("id"=>$data['gid']);
-			$rules_ids = $this->table("jt_auth_group")->where($where_group)->getField('rules');
+			$rules_ids = $this->table("fc_auth_group")->where($where_group)->getField('rules');
 			
 //			if(!$rules_ids){
 //				return false;
 //			}
 			
-			$group_info = $this->table("jt_auth_group")
+			$group_info = $this->table("fc_auth_group")
 			->field('id as gid,title as name,rules')->where($where_group)->find();
 
 			// 用户组信息不存在 非法查询
@@ -132,7 +132,7 @@ class AuthModel extends Model {
 				$where_rules['status'] = 1;
 				$where_rules['is_cate'] = 1;
 
-				$rule_list = $this->table("jt_auth_rule")
+				$rule_list = $this->table("fc_auth_rule")
 						->field("id as rid,title,condition")->where($where_rules)->select();
 			}
 
@@ -158,11 +158,11 @@ class AuthModel extends Model {
 	public  function delGroup($id){
 		$this->startTrans(); 
 	
-		$rs1 = $this->execute("delete from jt_auth_group where id=$id");
+		$rs1 = $this->execute("delete from fc_auth_group where id=$id");
 		
-		$rs2 = $this->execute("delete from jt_admin_user where uid in (select uid from jt_auth_group_access where group_id = $id )");
+		$rs2 = $this->execute("delete from fc_admin_user where uid in (select uid from fc_auth_group_access where group_id = $id )");
 		
-		$rs3 = $this->execute("delete from jt_auth_group_access where group_id = $id");
+		$rs3 = $this->execute("delete from fc_auth_group_access where group_id = $id");
 		
 		if($rs1&&false!==$rs2&&false!==$rs3){
 			$this->commit();	
@@ -182,7 +182,7 @@ class AuthModel extends Model {
     */
 	public function  getGroupRule($gid){
 		$where_group = array("id"=>$gid);
-		$rules_ids = $this->table("jt_auth_group")->where($where_group)->getField('rules');
+		$rules_ids = $this->table("fc_auth_group")->where($where_group)->getField('rules');
 
 		if(!$rules_ids){
 			return false;
@@ -207,7 +207,7 @@ class AuthModel extends Model {
 	public  function  initGroupRules($cid=0,$gropu_rules_id){
 		$cate_list = array();
 		//查询根目录下的一级目录
-		$top_cates = $this->table("jt_auth_rule")->where("type=1 and status=1 and pid=$cid and is_cate=1")->order('sort asc')->select();
+		$top_cates = $this->table("fc_auth_rule")->where("type=1 and status=1 and pid=$cid and is_cate=1")->order('sort asc')->select();
 
 		if($top_cates){
 			foreach ($top_cates as $k=>$v){
@@ -242,7 +242,7 @@ class AuthModel extends Model {
     * @version v1.0.0
     */
 	public  function  selectAuthRule($id){
-		return $this->table("jt_auth_rule")->where("type=1 and id = $id")->find();
+		return $this->table("fc_auth_rule")->where("type=1 and id = $id")->find();
 	}
 	
 	
@@ -293,7 +293,7 @@ class AuthModel extends Model {
     */	
 	
 	public  function delAuthRule($id){
-		$this->table("jt_auth_rule");
+		$this->table("fc_auth_rule");
 		return $this->where("id=$id")->delete();
 		
 	}
@@ -310,7 +310,7 @@ class AuthModel extends Model {
 	public  function selectAllAuthRule($cid=0){
 		$cate_list = array();
 		//查询根目录下的一级目录
-		$top_cates = $this->table("jt_auth_rule")->where("type=1 and  pid=$cid")->select();
+		$top_cates = $this->table("fc_auth_rule")->where("type=1 and  pid=$cid")->select();
 		
 		if($top_cates){
 			foreach ($top_cates as $k=>$v){
@@ -339,7 +339,7 @@ class AuthModel extends Model {
     */
 	
 	public function getSonCates($cid){
-		$has_son_cates = $this->table("jt_auth_rule")->where("type=1  and pid=$cid and is_cate=1")->count();
+		$has_son_cates = $this->table("fc_auth_rule")->where("type=1  and pid=$cid and is_cate=1")->count();
 		
 		return $has_son_cates;
 	}
@@ -354,7 +354,7 @@ class AuthModel extends Model {
     * @version v1.0.0
     */
 	public function getGuideTitle($name){
-		return $this->table("jt_auth_rule")->where("type=1  and name ='$name'")->getField("title");
+		return $this->table("fc_auth_rule")->where("type=1  and name ='$name'")->getField("title");
 	}
 
 
@@ -365,7 +365,7 @@ class AuthModel extends Model {
 	 */
 	public function getUserGroupId($uid)
 	{
-		$group =  $this->table('jt_auth_group_access')
+		$group =  $this->table('fc_auth_group_access')
 				->where(array('uid'=>$uid))
 				->find();
 		if(empty($group)){
@@ -383,11 +383,11 @@ class AuthModel extends Model {
 	 * @version v1.0.0
 	 */
 	public function authAllGroup($url,$gid){
-		$auth = $this->table("jt_auth_rule")->where("`name`='{$url}'")->find();
+		$auth = $this->table("fc_auth_rule")->where("`name`='{$url}'")->find();
 		if($auth){//权限存在
 	
 			//查询用户权限组
-			$level = $this->table("jt_auth_group")->where("`id`={$gid}")->find();
+			$level = $this->table("fc_auth_group")->where("`id`={$gid}")->find();
 			if($level){
 				//用户权限组拥有的权限
 				$array = explode(",",$level['rules']);
