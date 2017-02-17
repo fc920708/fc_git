@@ -8,7 +8,7 @@
 * 版权所有 2015 http://www.jiuxindai.com
 * ==============================================
 * @date 2015-11-14
-* @author:  王鹏
+* @author:  八宝粥
 */
 
 namespace Admin\Model;
@@ -28,7 +28,7 @@ class AuthModel extends Model {
 	
     /**
     * 查询所有用户所在组的信息列表
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-14
     * @version v1.0.0
     */
@@ -49,7 +49,7 @@ class AuthModel extends Model {
 	
 	/**
 	 * 获取所有用户组
-	 * @author 王鹏
+	 * @author 八宝粥
 	 * @date 2015-11-20
 	 * @version v1.0.0
 	 */
@@ -62,7 +62,7 @@ class AuthModel extends Model {
 	
     /**
     * 添加用户组
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-14
     * @version v1.0.0
     */
@@ -84,7 +84,7 @@ class AuthModel extends Model {
 	
     /**
     * 获取/设置用户组权限
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-14
     * @version v1.0.0
     */
@@ -151,7 +151,7 @@ class AuthModel extends Model {
 
     /**
     * 删除用户组
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-20
     * @version v1.0.0
     */
@@ -176,7 +176,7 @@ class AuthModel extends Model {
 	
     /**
     * 递归获取用户授权的栏目
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-17
     * @version v1.0.0
     */
@@ -199,7 +199,7 @@ class AuthModel extends Model {
 	
     /**
     * 排序整合用户组的权限列表
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-17
     * @version v1.0.0
     */
@@ -237,7 +237,7 @@ class AuthModel extends Model {
 	
     /**
     * 查看用户组权限节点信息
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-20
     * @version v1.0.0
     */
@@ -251,7 +251,7 @@ class AuthModel extends Model {
 	
     /**
     *添加权限验证节点
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-14
     * @version v1.0.0
     */	
@@ -269,7 +269,7 @@ class AuthModel extends Model {
 	
     /**
     * 修改权限验证节点规则
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-16
     * @version v1.0.0
     */
@@ -287,7 +287,7 @@ class AuthModel extends Model {
 	
     /**
     * 删除权限验证节点规则
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-16
     * @version v1.0.0
     */	
@@ -302,7 +302,7 @@ class AuthModel extends Model {
 	
     /**
     * 查询所有权限验证节点规则
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-16
     * @version v1.0.0
     */
@@ -333,7 +333,7 @@ class AuthModel extends Model {
 	
     /**
     * 检测是否有子级目录
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-17
     * @version v1.0.0
     */
@@ -349,7 +349,7 @@ class AuthModel extends Model {
 	
     /**
     * 获取导航名称
-    * @author 王鹏
+    * @author 八宝粥
     * @date 2015-11-17
     * @version v1.0.0
     */
