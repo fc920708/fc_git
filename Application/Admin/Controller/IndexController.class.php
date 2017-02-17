@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
-// use Think\Controller;
-class IndexController extends BaseController {
+use Think\Controller;
+class IndexController extends Controller {
     public function index(){
         layout(false);
         $this->display();
