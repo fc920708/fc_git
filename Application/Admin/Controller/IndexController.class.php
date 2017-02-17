@@ -79,4 +79,3 @@ class IndexController extends Controller
 
 
 }
-}
