@@ -1,6 +1,9 @@
 <?php
 return array(
 	//'配置项'=>'配置值'
+    //模板布局配置
+    'LAYOUT_ON'=>true,
+    'LAYOUT_NAME'=>'Layout/base',
 	//模板替换定义
 	'TMPL_PARSE_STRING'  =>array(
 
