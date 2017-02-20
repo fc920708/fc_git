@@ -16,6 +16,7 @@ return array(
 			'__PUBLIC__' =>'/Public',
 	    
 	        '__JC__'=>'/Public/Miao/jc',
+	        '__UPLOAD__'=>'/Public/Miao/upload',
 			
 	),
     /* 错误页面模板 */
