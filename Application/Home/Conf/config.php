@@ -14,9 +14,7 @@ return array(
 	        '__BOOTSTRAP__' => '/Public/Bootstrap',
 	        '__CUBE__' => '/Public/Cube',
 			'__PUBLIC__' =>'/Public',
-	    
-	        '__JC__'=>'/Public/Miao/jc',
-	        '__UPLOAD__'=>'/Public/Miao/upload',
+
 			
 	),
     /* 错误页面模板 */
